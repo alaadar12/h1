@@ -13,7 +13,7 @@ TITLE   8086 Code Template (for EXE file)
 
 DSEG    SEGMENT 'DATA'
 str1 db 'alaa'
-str2 db 'alac'
+str2 db 'claa'
 
 ; TODO: add your data here!!!!
 
