@@ -1,0 +1,73 @@
+TITLE   8086 Code Template for EXE file
+
+        #MAKE_EXE#
+
+DSEG    SEGMENT 'DATA'
+table   db 3,2,4,1,5
+sum     db ?
+min     db ?
+max     db ?
+DSEG    ENDS
+
+SSEG    SEGMENT STACK   'STACK'
+        DW      100h    DUP(?)
+SSEG    ENDS
+
+CSEG    SEGMENT 'CODE'
+
+START   PROC    FAR
+    PUSH    DS
+    MOV     AX, 0
+    PUSH    AX
+    
+    MOV     AX, DSEG
+    MOV     DS, AX
+    MOV     ES, AX
+    
+    lea bx, table
+    mov cx, 5
+    mov al, 0
+    
+l1_sum:
+    add al, [bx]
+    inc bx
+    loop l1_sum
+    
+    mov sum, al
+    
+    lea bx, table
+    mov cx, 4
+    mov al, [bx]
+    mov min, al
+    inc bx
+ ;sum   
+l2_min:
+    mov al, [bx]
+    cmp min, al
+    jb skip_min
+    mov min, al
+    ;min
+skip_min:
+    inc bx
+    loop l2_min
+    
+    lea bx, table
+    mov cx, 4
+    mov al, [bx]
+    mov max, al
+    inc bx
+  ;max  
+l3_max:
+    mov al, [bx]
+    cmp max, al
+    ja skip_max
+    mov max, al
+skip_max:
+    inc bx
+    loop l3_max
+    
+    RET
+START   ENDP
+
+CSEG    ENDS
+END START
